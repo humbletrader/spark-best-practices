@@ -39,6 +39,7 @@ List of best practices and fixes for issues encountered while developing spark a
 
  ## solving runtime performance issues
   * Kryo serialization
+  * persist when re-using RDDs 
   * Combine multiple RDD.maps/flatMaps/filters into one single RDD.map operation if possible
   * check CPU hotspots with a profiler
 
