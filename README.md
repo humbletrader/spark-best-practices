@@ -20,11 +20,12 @@ List of best practices and fixes for issues encountered while developing spark a
 
 # Solving the issues discovered
  ## solving OOM issues
-  * there’s no generic rule but most of the OOM issues
+  * there’s no generic rule
   * unpersist broadcasted variables as soon as possible ( sync if hot )
-  * use Iterators when possible ( avoid multiple maps when non iterators as they pollute the eden)
+  * use Iterators when possible (avoid multiple maps when non iterators as they pollute the eden space)
   * in hot areas we should use primitives instead of java classes
-  * detect memory size of your structure
+  * detect memory size of your structures
+      Quote from spark docs: The best way to size the amount of memory consumption a dataset will require is to create an RDD, put it into cache, and look at the “Storage” page in the web UI. To estimate the memory consumption of a particular object, use SizeEstimator’s estimate method. 
   * avoid as much as possible transfers from java to scala structures and viceversa
   * avoid heavy-on-memory documented rdd operations ( groupBy )
   * take control of your memory settings
