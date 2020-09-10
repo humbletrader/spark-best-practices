@@ -22,7 +22,7 @@ List of best practices and fixes for issues encountered while developing spark a
  ## solving OOM issues
   * there’s no generic rule
   * unpersist broadcasted variables as soon as possible ( sync if hot )
-  * use Iterators when possible (avoid multiple maps when non iterators as they pollute the eden space)
+  * use mapPartitions with Iterators when possible 
   * in hot areas we should use primitives instead of java classes
   * detect memory size of your structures
       Quote from spark docs: The best way to size the amount of memory consumption a dataset will require is to create an RDD, put it into cache, and look at the “Storage” page in the web UI. To estimate the memory consumption of a particular object, use SizeEstimator’s estimate method. 
@@ -32,6 +32,7 @@ List of best practices and fixes for issues encountered while developing spark a
     * control your driver and executor heap
     * be aware of your executor overhead and/or control it
   * don't go over 32 GB / executor 
+  * rdd.cogroup and rdd.join load their data into memory as spark.CompactBuffer(s)   
 
  ## solving disk full issues
   * check the size of your persisted data ( spark ui )
