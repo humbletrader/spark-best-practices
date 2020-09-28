@@ -2,7 +2,23 @@
 
 == CPU issues
 
+
 == Memory issues
+* unpersist broadcasted variables as soon as possible ( sync if hot )
+* use mapPartitions with Iterators when possible
+* in hot areas we should use primitives instead of java classes
+* detect memory size of your structures 
+  Quote from spark docs: The best way to size the amount of memory consumption a dataset will require is to create an RDD, put it into cache, and look at the   “Storage” page in the web UI. To estimate the memory consumption of a particular object, use SizeEstimator’s estimate method.
+    
+ * avoid as much as possible transfers from java to scala structures and viceversa
+ * avoid as much as possible heavy-on-memory documented rdd operations ( groupBy, co-group even join ) as they rely spark.CompactBuffer(s) which stores data in memory
+ 
+ * don't go over 32 GB / executor
+    
+  * take control of your memory settings
+      ** control your driver and executor heap
+      ** be aware of your executor overhead and/or control it
+
 
 == Disk issues
 
