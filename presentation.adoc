@@ -2,7 +2,7 @@
 
 == CPU / runtime performance issues
 
-=== Sumptoms
+=== Symptoms
 
 === Solutions
 * Kryo serialization
@@ -39,4 +39,11 @@
 === Symptoms
 
 === Solutions
+* check the size of your persisted data ( spark ui )
+* controll your shuffles 
+* kryo when possible
+* controll the size of hdfs blocks
+* gzip spilled data to disk ( see spark configuration for gzip ) 
+* make sure you don’t log too much ( i.e opportunities )
+
 
