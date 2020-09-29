@@ -16,6 +16,8 @@
 == OutOfMemory issues
 
 === Symptoms 
+* java.lang.OutOfMemoryError : GC overhead limit exceeded
+* Container killed by YARN for exceeding memory limits. 12.4 GB of 12 GB physical memory used. Consider boosting spark.yarn.executor.memoryOverhead.
 * often hidden as TimeoutException of IOException
 
 === Solutions
