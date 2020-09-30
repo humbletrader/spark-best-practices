@@ -52,6 +52,17 @@ java.io.EOFException: Unexpected EOF while trying to read response from server
 ----
 
 === Solutions
+* check yout GC logs 
+in EMR env they are in stdout. 
+----
+2020-09-29T07:16:17.239+0000: [GC (Allocation Failure) 2020-09-29T07:16:17.239+0000: [ParNew: 629120K->30791K(629120K), 0.2974821 secs] 633015K->98181K(2027264K), 0.2975878 secs] [Times: user=3.71 sys=0.06, real=0.30 secs] 
+2020-09-29T07:16:20.218+0000: [GC (Allocation Failure) 2020-09-29T07:16:20.218+0000: [ParNew: 590023K->69888K(629120K), 0.2883358 secs] 657413K->195919K(2027264K), 0.2884263 secs] [Times: user=0.71 sys=0.04, real=0.29 secs] 
+2020-09-29T07:16:21.062+0000: [GC (Allocation Failure) 2020-09-29T07:16:21.062+0000: [ParNew: 629120K->69888K(629120K), 1.2208962 secs] 755151K->592684K(2027264K), 1.2209997 secs] [Times: user=2.76 sys=0.39, real=1.22 secs] 
+2020-09-29T07:16:22.283+0000: [GC (CMS Initial Mark) [1 CMS-initial-mark: 522796K(1398144K)] 601001K(2027264K), 0.0134823 secs] [Times: user=0.02 sys=0.00, real=0.01 secs]
+----
+
+If needed you can use https://gceasy.io/
+
 * unpersist broadcasted variables as soon as possible ( sync if hot )
 * use mapPartitions with Iterators when possible
 * in hot areas we should use primitives instead of java classes and FastUtil collections inastead of Java/Scala collections
