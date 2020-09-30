@@ -146,11 +146,21 @@ If needed you can use https://gceasy.io/[GC Easy]
 * in hot areas we should use primitives instead of java classes and FastUtil collections inastead of Java/Scala collections
 
 * detect memory size of your structures
-  Quote from spark docs: The best way to size the amount of memory consumption a dataset will require is to create an RDD, put it into cache, and look at the   “Storage” page in the web UI. To estimate the memory consumption of a particular object, use SizeEstimator’s estimate method.
+
+> The best way to size the amount of memory consumption a dataset will require is to create an RDD, put it into cache,
+> and look at the  “Storage” page in the web UI.
+
+> To estimate the memory consumption of a particular object, use SizeEstimator’s estimate method.
     
 * avoid as much as possible transfers from java to scala structures and viceversa
 
-* avoid as much as possible heavy-on-memory documented rdd operations ( groupBy, co-group even join ) as they rely spark.CompactBuffer(s) which stores data in memory
+* avoid as much as possible heavy-on-memory documented rdd operations ( groupBy, co-group , join ) footnote:[they provide an Iterable parameter] footnote:[they rely spark.CompactBuffer(s) which stores data in memory]
+
+> Sometimes, you will get an OutOfMemoryError not because your RDDs don’t fit in memory, but because the working set of one of your tasks,
+> such as one of the reduce tasks in groupByKey, was too large.
+> Spark’s shuffle operations (sortByKey, groupByKey, reduceByKey, join, etc) build a hash table within each task to perform the grouping, which can often be large.
+> The simplest fix here is to increase the level of parallelism, so that each task’s input set is smaller. Spark can efficiently support tasks as short as 200 ms, because it reuses one executor JVM across many tasks and it has a low task launching cost, so you can safely increase the level of parallelism to more than the number of cores in your clusters.
+
 
 * Decrease the fraction of memory reserved for caching, using spark.storage.memoryFraction. If you don't use cache() or persist in your code, this might as well be 0. It's default is 0.6
 
