@@ -147,11 +147,31 @@ https://0x0fff.com/spark-memory-management/[image source]
 
 * use mapPartitions with Iterators when possible
 
-* in hot areas :
-  - we should use primitives instead of java classes and http://fastutil.di.unimi.it/[FastUtil] collections instead of Java/Scala collections
-  - prefer RDD.map / flatMap  over Iterator.map / flatMap
+
+* avoid wrapper classes as much as possible
+
+|===
+| primitive/Wrapper | primitive size | wrapper size
+| boolean |1 bit ?| 128 bits
+| byte | 8 bits | 128 bits
+| short, char | 16 bits | 128 bits
+| int, float | 32 bits | 128 bits
+| long, double | 64 bits | 192 bits
+|===
+
+.Example:
+if-allocation :  30.0000 campaigns * 4000 hours (aprox) * 192 bits (Double) = 21GB
+
+because https://stackoverflow.com/questions/258120/what-is-the-memory-consumption-of-an-object-in-java[java classes overhead]
+
+* in hot areas : avoid Option if needed as it requires an extra wrapper class Ex. Option[Double]
+
+* in hot areas : use primitive based collections instead of classic java collections and http://fastutil.di.unimi.it/[FastUtil] collections instead of Java/Scala collections
+
+* nice to have in hot areas: 
+- prefer RDD.map / flatMap  over Iterator.map / flatMap
   - avoid transfers from java to scala and viceversa
-  - avoid Option if needed as it requires an extra wrapper class Ex. Option[Double]
+
 
 * detect memory size of your structures
     - does not work for lazy structures ( RDD, Iterators)
