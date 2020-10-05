@@ -6,7 +6,7 @@
 * slow processing time, obviously
 * just a fraction of your processing power is used
 
-image::images/cluster_cpu_wrong_distribution_of_tasks.png[]
+image::cluster_cpu_wrong_distribution_of_tasks.png[]
 
 == Solutions
 
@@ -57,10 +57,10 @@ val result2 = partitionedRdd.flatMap(...).saveAsHadoop()
 * Kryo serialization
 
 .java serializers speed comparison
-image::images/kryo-cpu-performance.png[]
+image::kryo-cpu-performance.png[]
 
 .java serializers memory consumption comparison
-image::images/kryo-space.png[]
+image::kryo-space.png[]
 
 more details https://github.com/eishay/jvm-serializers/wiki[here]
 
@@ -77,15 +77,15 @@ Besides the https://github.com/EsotericSoftware/kryo/blob/master/src/com/esoteri
 
 * avoid unnecessary partitioning (ex. groupByKey vs. reduceByKey)
 
-image::images/groupByKey.png[]
+image::groupByKey.png[]
 
-image::images/reduceByKey.png[]
+image::reduceByKey.png[]
 
 https://databricks.gitbooks.io/databricks-spark-knowledge-base/content/best_practices/prefer_reducebykey_over_groupbykey.html[image source]
 
 * check CPU hotspots with a profiler
 
-image::images/CPU_HotSpot.png[CPU Hotspots]
+image::CPU_HotSpot.png[CPU Hotspots]
 
 * make sure your partitions are balanced (data is evenly distributed)
 
@@ -141,7 +141,7 @@ If needed you can use https://gceasy.io/[GC Easy]
 
 * unpersist broadcasted variables as soon as possible (sync if hot)
 
-image::images/spark-dynamic-memory-allocation-for-storage.png[]
+image::spark-dynamic-memory-allocation-for-storage.png[]
 
 https://0x0fff.com/spark-memory-management/[image source]
 
@@ -179,9 +179,9 @@ because https://stackoverflow.com/questions/258120/what-is-the-memory-consumptio
 > The best way to size the amount of memory consumption a dataset will require is to create an RDD, put it into cache,
 > and look at the  “Storage” page in the web UI.
 
-image::images/rdd-memory-size.png[]
+image::rdd-memory-size.png[]
 
-image::images/partition-memory-size.png[]
+image::partition-memory-size.png[]
 
 > To estimate the memory consumption of a particular object, use SizeEstimator’s estimate method.
     
@@ -195,7 +195,7 @@ image::images/partition-memory-size.png[]
 
 * executor.memory, spark.memory.fraction, spark.storage.fraction
 
-image::images/spark-memory-fractions.png[]
+image::spark-memory-fractions.png[]
 
 * don't go over 32 GB / executor
 
@@ -211,7 +211,7 @@ https://docs.oracle.com/en/java/javase/11/vm/java-hotspot-virtual-machine-perfor
 
 * check which class/object is keeping your reference from being garbage collected :
 
-image::images/who-is-holding-a-reference-to-your-data.png[]
+image::who-is-holding-a-reference-to-your-data.png[]
 
 * obvious steps:
     - consider increasing the driver / executor heap and their overhead
@@ -225,9 +225,9 @@ image::images/who-is-holding-a-reference-to-your-data.png[]
 === Solutions
 * check the size of your persisted data ( spark ui )
 
-image::images/persisted-data.png[]
+image::persisted-data.png[]
 
-image::images/rdd_persisted_size_per_partition.png[]
+image::rdd_persisted_size_per_partition.png[]
 
 * controll and gzip your shuffles if needed
 
