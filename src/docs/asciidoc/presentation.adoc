@@ -31,32 +31,45 @@ image::CPU_HotSpot.png[CPU Hotspots]
 
 [source,scala]
 ----
-case class OpportunityRequestData(oppo : ForecastedOppoWithPoi, log: Logger) extends RequestData {
+case class OpportunityRequestData(oppo : ForecastedOppoWithPoi)
+extends RequestData {
 
   val queryParamMapFromString = QueryParamMapBuilder.buildQueryParamMap(
     oppo.forecastedOppo.getUrlQuery,
     oppo.commaSeparatedPois
   )
 
-  override def getOperatingSystem: String = oppo.forecastedOppo.getOs
+  override def getOperatingSystem: String = ???
 
-  override def getPlayerDeviceName: String = oppo.forecastedOppo.getDeviceType
+  override def getPlayerDeviceName: String = ???
   //other getters here ...
 }
+----
 
-def matchOpportunityWithCampaign(limitationMatcher: BannerLimitationMatcher,
-                                  oppoWithPoi: ForecastedOppoWithPoi,
+== unneeded processing
+
+[source,scala]
+----
+
+def matchOpportunityWithCampaign( oppoWithPoi: ForecastedOppoWithPoi,
 								  campaign: Campaign): Iterable[(Zone, Banner)] =
     for {
-        banner <- campaign.getBanners.asScala
+        banner <- campaign.getBanners
         zone <- matchZones(oppoWithPoi.forecastedOppo, banner)
-        if limitationMatcher.matchesLimitations(oppoWithPoi, banner)
+        if matchesLimitations(oppoWithPoi, banner)
     } yield zone -> banner
 }
+----
 
+== unneeded processing
 
+[source,scala]
+----
 def matchesLimitations(opportunity: ForecastedOppoWithPoi, banner: Banner) : Boolean = {
-    limitationEvaluator.evaluate(banner.getLimitation, OpportunityRequestData(opportunity, log))
+    limitationEvaluator.evaluate(
+        banner.getLimitation,
+        OpportunityRequestData(opportunity)
+    )
 }
 ----
 
