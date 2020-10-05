@@ -179,6 +179,10 @@ because https://stackoverflow.com/questions/258120/what-is-the-memory-consumptio
 > The best way to size the amount of memory consumption a dataset will require is to create an RDD, put it into cache,
 > and look at the  “Storage” page in the web UI.
 
+image::images/rdd-memory-size.png[]
+
+image::images/partition-memory-size.png[]
+
 > To estimate the memory consumption of a particular object, use SizeEstimator’s estimate method.
     
 * avoid as much as possible heavy-on-memory documented rdd operations ( groupBy, co-group , join ) footnote:[they provide an Iterable parameter] footnote:[they rely spark.CompactBuffer(s) which stores data in memory]
@@ -203,21 +207,43 @@ image::images/spark-memory-fractions.png[]
 > compressed ordinary object pointers is supported and enabled by default in Java SE 6u23 and later.
 > In Java SE 7, compressed oops is enabled by default for 64-bit JVM processes when -Xmx isn't specified and for values of -Xmx less than 32 gigabytes.
 
-* show how to detect memory used by some structures
+https://docs.oracle.com/en/java/javase/11/vm/java-hotspot-virtual-machine-performance-enhancements.html#GUID-932AD393-1C8C-4E50-8074-F81AD6FB2444[source]
 
+* check which class/object is keeping your reference from being garbage collected :
 
-* if no memory leaks then consider increasing the driver / executor heap and their overhead
+image::images/who-is-holding-a-reference-to-your-data.png[]
+
+* obvious steps:
+    - consider increasing the driver / executor heap and their overhead
+    - hardware configuration
 
 
 == Disk / Networking issues
 === Symptoms
+ * disk full errors
 
 === Solutions
 * check the size of your persisted data ( spark ui )
-* controll your shuffles 
-* kryo when possible
-* controll the size of hdfs blocks
-* gzip spilled data to disk ( see spark configuration for gzip ) 
-* make sure you don’t log too much ( i.e opportunities )
+
+image::images/persisted-data.png[]
+
+image::images/rdd_persisted_size_per_partition.png[]
+
+* controll and gzip your shuffles if needed
+
+[source,shell script]
+----
+ spark-submit App
+  --conf spark.shuffle.compress=true \
+  --conf spark.shuffle.spill.compress=true
+----
+
+* kryo
+
+* control the size of hdfs blocks
+
+* gzip spilled data to disk (see spark configuration for gzip )
+
+* Obvious: make sure you don’t log too much (i.e opportunities)
 
 
