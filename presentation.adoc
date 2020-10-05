@@ -168,7 +168,7 @@ because https://stackoverflow.com/questions/258120/what-is-the-memory-consumptio
 
 * in hot areas : use primitive based collections instead of classic java collections and http://fastutil.di.unimi.it/[FastUtil] collections instead of Java/Scala collections
 
-* nice to have in hot areas: 
+* nice to have in hot areas:
 - prefer RDD.map / flatMap  over Iterator.map / flatMap
   - avoid transfers from java to scala and viceversa
 
@@ -193,11 +193,18 @@ because https://stackoverflow.com/questions/258120/what-is-the-memory-consumptio
 
 image::images/spark-memory-fractions.png[]
 
-* OOM during shuffles do the opposite i.e. set shuffle.memory.fraction to something large, like 0.8
- 
 * don't go over 32 GB / executor
 
+> On an LP64 system, the heap used by a given program might have to be around 1.5 times larger than when it is run on an ILP32 system
+
+> Compressed oops represent managed pointers (in many but not all places in the Java Virtual Machine (JVM) software) as 32-bit object offsets from the 64-bit Java heap base address.
+> Because they're object offsets rather than byte offsets, oops can be used to address up to four billion objects (not bytes), or a heap size of up to about 32 gigabytes.
+
+> compressed ordinary object pointers is supported and enabled by default in Java SE 6u23 and later.
+> In Java SE 7, compressed oops is enabled by default for 64-bit JVM processes when -Xmx isn't specified and for values of -Xmx less than 32 gigabytes.
+
 * show how to detect memory used by some structures
+
 
 * if no memory leaks then consider increasing the driver / executor heap and their overhead
 
