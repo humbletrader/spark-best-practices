@@ -13,15 +13,29 @@ ifndef::imagesdir[:imagesdir: images]
 
 Disclaimer: they are all related
 
+== Obvious
+
+=== right tool for the right job
+
+
+
+=== executor / driver configuration (cores, memory)
+
+----
+executors per instance = (total number of virtual cores per instance - 1)/ spark.executor.cores
+
+executor memory = spark.executor.memory + spark.executor.memoryOverhead (or yarn)
+----
+
+=== nbr. partitions / core
+
+
 == CPU / runtime performance issues
 
 == Symptoms: slow processing time
 == Symptoms: just a fraction of your processing power is used
 
-== hardware / software configuration
-
-* executor / driver configuration (cores, memory)
-* partitions / core
+== Solutions
 
 == check CPU hotspots
 
@@ -41,7 +55,6 @@ extends RequestData {
 
   override def getOperatingSystem: String = ???
 
-  override def getPlayerDeviceName: String = ???
   //other getters here ...
 }
 ----
@@ -174,6 +187,8 @@ java.io.EOFException: Unexpected EOF while trying to read response from server
     at org.apache.hadoop.hdfs.DataStreamer$ResponseProcessor.run(DataStreamer.java:1073)
 ----
 
+== Solutions
+
 == check your GC logs
 
 in EMR env they are in stdout.
@@ -192,6 +207,8 @@ in EMR env they are in stdout.
 
 ==  unpersist broadcasted variables
 
+
+[.stretch]
 image::spark-dynamic-memory-allocation-for-storage.png[]
 
 https://0x0fff.com/spark-memory-management/[image source]
@@ -258,7 +275,8 @@ image::partition-memory-size.png[]
  * groupByKey, reduceByKey, combine, aggregate
  * co-group, join
 
-footnote:[they provide an Iterable parameter] footnote:[they rely spark.CompactBuffer(s) which stores data in memory]
+footnote:[they provide an Iterable parameter]
+footnote:[they rely spark.CompactBuffer(s) which stores data in memory]
 
 == memory-heavy rdd operations
 
