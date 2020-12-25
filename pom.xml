@@ -11,7 +11,7 @@
     <properties>
         <!-- the output will be written here -->
 <!--        <project.slides.directory>${project.build.directory}/generated-slides</project.slides.directory>-->
-        <project.slides.directory>${project.basedir}/slides</project.slides.directory>
+        <project.slides.directory>${project.basedir}/docs</project.slides.directory>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
